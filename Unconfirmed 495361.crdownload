@@ -1,0 +1,468 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+import pandas as pd
+import pandas as pd
+import sklearn
+import seaborn as sns 
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error,mean_absolute_error
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+
+# In[2]:
+
+
+#data=pd.read_csv('https://raw.githubusercontent.com/dsrscientist/DSData/master/winequality-red.csv')
+
+
+# In[3]:
+
+
+data=pd.read_csv("wine.csv")
+
+
+# In[4]:
+
+
+data
+
+
+# In[5]:
+
+
+data.head()
+
+
+# In[6]:
+
+
+data.info()
+
+
+# In[7]:
+
+
+data.isnull().sum()
+
+
+# In[8]:
+
+
+data.shape
+
+
+# In[9]:
+
+
+data.columns
+
+
+# In[10]:
+
+
+data.columns.tolist()
+
+
+# In[11]:
+
+
+data.dtypes
+
+
+# In[12]:
+
+
+data.isnull().sum().sum()
+
+
+# In[13]:
+
+
+sns.heatmap(data.isnull())
+
+
+# In[14]:
+
+
+sns.heatmap(data)
+
+
+# In[15]:
+
+
+data['fixed acidity'].unique()
+
+
+# In[16]:
+
+
+data['fixed acidity'].nunique()
+
+
+# In[17]:
+
+
+for i in data.columns:
+    print(data[i].value_counts())
+    print('\n')
+
+
+# In[18]:
+
+
+data.describe()  
+
+
+# In[19]:
+
+
+data.skew()
+
+
+# In[20]:
+
+
+data.shape[0]
+
+
+# In[21]:
+
+
+data.shape
+
+
+# In[22]:
+
+
+data.isnull().sum()
+
+
+# In[23]:
+
+
+np.mean(data['fixed acidity'])
+
+
+# In[24]:
+
+
+data['fixed acidity'].mean()
+
+
+# In[25]:
+
+
+data.iloc[200,:]
+
+
+# In[26]:
+
+
+data.head(201)
+
+
+# In[27]:
+
+
+numerical_col=[]
+for i in data.dtypes.index:
+    if data.dtypes[i]!='object':
+        numerical_col.append(i)
+print("numerical Columns:",numerical_col)
+print('\n')
+
+
+# In[28]:
+
+
+data.nunique().to_frame("no of uniqe ")
+
+
+# In[29]:
+
+
+ax=sns.countplot(x='fixed acidity',data=data) 
+print(data['fixed acidity'].value_counts())
+
+
+# In[30]:
+
+
+ax=sns.countplot(x='volatile acidity',data=data)
+print(data['volatile acidity'].value_counts())
+
+
+# In[31]:
+
+
+ax=sns.countplot(x='citric acid',data=data)
+print(data['citric acid'].value_counts())
+
+
+# In[32]:
+
+
+ax=sns.countplot(x='residual sugar',data=data)
+print(data['residual sugar'].value_counts())
+
+
+# In[33]:
+
+
+ax=sns.countplot(x='chlorides',data=data)
+print(data['chlorides'].value_counts())
+
+
+# In[34]:
+
+
+ax=sns.countplot(x='free sulfur dioxide',data=data)
+print(data['free sulfur dioxide'].value_counts())
+
+
+# In[35]:
+
+
+ax=sns.countplot(x='density',data=data)
+print(data['density'].value_counts())
+
+
+# In[36]:
+
+
+ax=sns.countplot(x='total sulfur dioxide',data=data)
+print(data['total sulfur dioxide'].value_counts())
+
+
+# In[37]:
+
+
+ax=sns.countplot(x='pH',data=data)
+print(data['pH'].value_counts())
+
+
+# In[38]:
+
+
+ax=sns.countplot(x='sulphates',data=data)
+print(data['sulphates'].value_counts())
+
+
+# In[ ]:
+
+
+
+
+
+# In[39]:
+
+
+ax=sns.countplot(x='alcohol',data=data)
+print(data['alcohol'].value_counts())
+
+
+# In[ ]:
+
+
+
+
+
+# In[40]:
+
+
+ax=sns.countplot(x='quality',data=data)
+print(data['quality'].value_counts())
+
+
+# In[41]:
+
+
+sns.barplot(x='quality',y='alcohol',data=data)
+
+
+# In[42]:
+
+
+sns.scatterplot(x='citric acid',y='pH',data=data)
+
+
+# In[43]:
+
+
+#plt.figure(figsize=(10,6),facecolor-'red')
+ax=plt.subplot(data)
+
+
+# In[44]:
+
+
+plt.figure(figsize=(10,6),facecolor='white')
+plotnumber=1
+for col in numerical_col:
+    if plotnumber<=4:
+        ax=plt.subplot(2,2, plotnumber)
+        sns.distplot(data[col],color='g')
+        plt.xlabel(col,fontsize=12)
+        plt.yticks(rotation=0,fontsize=10)
+    plotnumber+=1
+plt.tight_layout()    
+        
+
+
+# In[45]:
+
+
+plt.title('comparison between fixed acidity and volatile acidity')
+sns.stripplot(x='fixed acidity',y='volatile acidity',data=data)
+plt.show()
+
+
+# In[46]:
+
+
+data.plot(kind='box',subplots=True,layout=(2,8))
+
+
+# In[47]:
+
+
+plt.figure(figsize=(12,6))
+sns.pairplot(data)
+
+
+# In[48]:
+
+
+sns.heatmap(data.corr(),annot=True)
+
+
+# In[49]:
+
+
+data.hist(bins=25,figsize=(10,10))
+plt.show()
+
+
+# # testing
+
+# In[50]:
+
+
+x=data.iloc[1:,-1]
+
+
+# In[51]:
+
+
+x=data.iloc[:,0:11]
+
+
+# In[52]:
+
+
+x
+
+
+# testing
+
+# In[53]:
+
+
+y=data['quality']
+
+
+# In[54]:
+
+
+y
+
+
+# In[55]:
+
+
+x.shape
+
+
+# In[56]:
+
+
+y.shape
+
+
+# In[57]:
+
+
+from sklearn.model_selection import train_test_split
+
+
+# In[146]:
+
+
+xtrain,xtest, ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=0)
+
+
+# In[147]:
+
+
+from sklearn.tree import DecisionTreeClassifier 
+
+
+# In[148]:
+
+
+dtc=DecisionTreeClassifier()
+
+
+# In[149]:
+
+
+dtc.fit(xtrain,ytrain)
+
+
+# In[150]:
+
+
+pred=dtc.predict(xtest)
+
+
+# In[151]:
+
+
+pred
+
+
+# In[152]:
+
+
+from sklearn.metrics import accuracy_score,confusion_matrix,classification_report
+
+
+# In[153]:
+
+
+accuracy_score(ytest,pred)
+
+
+# In[154]:
+
+
+confusion_matrix(ytest,pred)
+
+
+# In[155]:
+
+
+print(classification_report(ytest,pred))
+
+
+# In[ ]:
+
+
+
+

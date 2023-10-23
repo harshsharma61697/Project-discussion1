@@ -1,0 +1,273 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+import pandas as pd
+import pandas as pd
+import sklearn
+import seaborn as sns 
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error,mean_absolute_error
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+
+# In[52]:
+
+
+df1=pd.read_csv('m.cost.csv')
+
+
+# In[54]:
+
+
+df1
+
+
+# In[55]:
+
+
+df1.shape
+
+
+# In[5]:
+
+
+df.info()
+
+
+# In[56]:
+
+
+df1.isnull().sum()
+
+
+# In[57]:
+
+
+df1.columns.tolist()
+
+
+# In[58]:
+
+
+df1.dtypes
+
+
+# In[59]:
+
+
+df1.describe()  
+
+
+# In[60]:
+
+
+sns.countplot(x='sex',data=df1)
+
+
+# In[61]:
+
+
+sns.countplot(x='smoker',data=df1)
+
+
+# In[62]:
+
+
+sns.countplot(x='region',data=df1)
+
+
+# In[63]:
+
+
+sns.countplot(x='charges',data=df1)
+
+
+# In[64]:
+
+
+sns.barplot(x='charges',y='region',data=df1)
+
+
+# In[65]:
+
+
+sns.barplot(x='charges',y='smoker',data=df1)
+
+
+# In[66]:
+
+
+sns.barplot(x='sex',y='charges',hue='smoker',data=df1)
+
+
+# In[67]:
+
+
+sns.histplot(df1)
+
+
+# In[68]:
+
+
+df1.head()
+
+
+# In[69]:
+
+
+df1['smoker']=df1['smoker'].apply({'yes':1,'no':0}.get)
+df1['sex']=df1['sex'].apply({'female':0,'male':1}.get)
+df1['region']=df1['region'].apply({'southwest':2,'southeast':3,'northeast':4,'northwest':5}.get)
+
+
+# In[70]:
+
+
+df1.head()
+
+
+# In[71]:
+
+
+sns.heatmap(df1.corr(),annot=True)
+
+
+# In[73]:
+
+
+x=df1.drop(['charges','sex'],axis=1)
+y=df1.charges
+
+
+# In[74]:
+
+
+x
+
+
+# In[75]:
+
+
+y
+
+
+# In[76]:
+
+
+x.shape
+
+
+# In[77]:
+
+
+y.shape
+
+
+# In[81]:
+
+
+x_train,X_test,y_train,y_test=train_test_split(x,y,test_size=22,random_state=42)
+
+
+# In[82]:
+
+
+x_train.shape
+
+
+# In[83]:
+
+
+y.shape
+
+
+# In[85]:
+
+
+X_test.shape
+
+
+# In[87]:
+
+
+y_test.shape
+
+
+# In[88]:
+
+
+y_train.shape
+
+
+# In[89]:
+
+
+ln=LinearRegression()
+
+
+# In[90]:
+
+
+ln
+
+
+# In[92]:
+
+
+ln.fit(x_train,y_train)
+pred=ln.predict(X_test)
+
+
+# In[98]:
+
+
+pred
+
+
+# In[93]:
+
+
+from sklearn.metrics import r2_score
+
+
+# In[94]:
+
+
+print('r2_score:',(r2_score(y_test,pred)))
+
+
+# In[101]:
+
+
+plt.scatter(y_test,pred)
+plt.xlabel('y_test')
+plt.ylabel('y pred')
+plt.show()
+
+
+# In[107]:
+
+
+data={'age':60,'bmi':34,'child':2,'smoker':0,'region':2}
+index=[0]
+dft=pd.DataFrame(data,index)
+dft
+
+
+# In[108]:
+
+
+dft_pred=ln.predict(dft)
+print('new custumer rate:',dft_pred)
+
+
+# In[ ]:
+
+
+
+
